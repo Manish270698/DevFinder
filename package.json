@@ -1,0 +1,33 @@
+{
+  "name": "dev_tinder",
+  "version": "1.0.0",
+  "description": "Tinder for developers",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manish270698/DevFinder.git"
+  },
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "backend"
+  ],
+  "author": "Manish Kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manish270698/DevFinder/issues"
+  },
+  "homepage": "https://github.com/Manish270698/DevFinder#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.1",
+    "mongoose": "^8.7.1",
+    "nodemon": "^3.1.7",
+    "validator": "^13.12.0"
+  }
+}
