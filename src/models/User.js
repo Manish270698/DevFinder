@@ -2,6 +2,8 @@ const { Schema, default: mongoose } = require("mongoose");
 const { isStrongPassword } = require("validator");
 const { default: isEmail } = require("validator/lib/isEmail");
 const { default: isURL } = require("validator/lib/isURL");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const checkDuplicate = (val) => {
   val = val.map((ele) => ele.trim().toLowerCase());
@@ -52,6 +54,7 @@ const userSchema = new Schema(
     },
     emailId: {
       type: String,
+      index: true,
       unique: true,
       lowercase: true,
       trim: true,
@@ -88,6 +91,7 @@ const userSchema = new Schema(
       trim: true,
       enum: ["male", "female", "other"],
       required: true,
+      message: "{VALUE} is not supported",
     },
     skills: {
       type: [String],
@@ -107,9 +111,38 @@ const userSchema = new Schema(
         }
       },
     },
+    about: {
+      type: String,
+      maxLength: 80,
+      trim: true,
+      validate(value) {
+        if (!value) {
+          throw new Error("Write something about yourself!");
+        }
+      },
+      required: true,
+    },
   },
   { timestamps: true }
 );
+
+userSchema.methods.validateUser = async function (passwordInputByUser) {
+  const passwordHash = this.password;
+
+  const isPasswordValid = await bcrypt.compare(
+    passwordInputByUser,
+    passwordHash
+  );
+  return isPasswordValid;
+};
+
+userSchema.methods.getJWT = async function () {
+  const token = jwt.sign({ _id: this._id }, "Dev@Finder123", {
+    expiresIn: "7d", //expires in 7 days
+  });
+
+  return token;
+};
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

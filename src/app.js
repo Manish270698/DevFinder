@@ -1,9 +1,12 @@
 const express = require("express");
 const app = express();
 const connectDB = require("./config/database");
-const User = require("./models/User");
-const validateSignUpData = require("./utils/validate");
-const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
 
 connectDB()
   .then(() => {
@@ -17,72 +20,9 @@ connectDB()
   });
 
 app.use(express.json());
+app.use(cookieParser());
 
-app.post("/signup", async (req, res) => {
-  try {
-    //Validating the signUpData
-    validateSignUpData(req);
-
-    const {
-      firstName,
-      lastName,
-      emailId,
-      password,
-      age,
-      gender,
-      skills,
-      photoUrl,
-    } = req.body;
-    // hash the password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password: passwordHash,
-      age,
-      gender,
-      skills,
-      photoUrl,
-    });
-    // manually creating index
-    await User.createIndexes();
-    await user.save();
-    res.send("User created successfully");
-  } catch (err) {
-    res.status(400).send("ERROR: " + err);
-  }
-});
-
-app.patch("/profile/:userId", async (req, res) => {
-  const userId = req?.params?.userId;
-  const data = req?.body;
-  try {
-    const ALLOWED_UPDATES = [
-      "firstName",
-      "lastName",
-      "password",
-      "age",
-      "gender",
-      "skills",
-      "photoUrl",
-    ];
-    const isUpdateAllowed = Object.keys(data).every((key) =>
-      ALLOWED_UPDATES.includes(key)
-    );
-
-    //Only allowing some fields to be updated
-    if (!isUpdateAllowed) {
-      return res.status(400).send("Update not allowed!"); // return helps to stop the flow here if this block is entered
-    }
-
-    await User.findByIdAndUpdate(userId, data, {
-      returnDocument: true,
-      runValidators: true,
-    });
-    res.send("Updated successfully");
-  } catch (err) {
-    res.status(400).send("ERROR : " + err);
-  }
-});
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
