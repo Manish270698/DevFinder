@@ -89,7 +89,7 @@ const userSchema = new Schema(
       type: String,
       lowercase: true,
       trim: true,
-      enum: ["male", "female", "other"],
+      enum: ["male", "female", "others"],
       required: true,
       message: "{VALUE} is not supported",
     },
@@ -113,7 +113,7 @@ const userSchema = new Schema(
     },
     about: {
       type: String,
-      maxLength: 80,
+      maxLength: 200,
       trim: true,
       validate(value) {
         if (!value) {

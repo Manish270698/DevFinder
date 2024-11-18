@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const cors = require("cors");
 
 connectDB()
   .then(() => {
@@ -19,6 +20,13 @@ connectDB()
     console.error("Error while connecting to database with message: ", err);
   });
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

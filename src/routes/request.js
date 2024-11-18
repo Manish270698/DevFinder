@@ -16,7 +16,7 @@ requestRouter.post(
       const status = req.params.status;
 
       const allowedStatus = ["ignored", "interested"];
-      if (!allowedStatus.includes(status.toLocaleLowerCase())) {
+      if (!allowedStatus.includes(status.toLowerCase())) {
         return res.status(400).json({ message: `Invalid status: ${status}` });
       }
 
@@ -39,7 +39,7 @@ requestRouter.post(
       });
 
       if (existingConnectionRequest) {
-        return res.status(400).json({ message: "Request already exists!" });
+        throw new Error("Request already exists!");
       }
 
       const connectionRequest = new ConnectionRequest({
