@@ -78,7 +78,6 @@ profileRouter.patch("/profile/password", userAuth, async (req, res) => {
       { password: passwordHash },
       { runValidators: true }
     );
-    console.log("NEWUser: " + loggedInUser);
     res.send("Password updated successfully!");
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);

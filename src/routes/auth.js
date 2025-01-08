@@ -68,7 +68,7 @@ authRouter.post("/signup", async (req, res) => {
     });
     if (!photoUrl)
       photoUrl = "https://avatars.githubusercontent.com/u/51204518?v=3";
-    
+
     res.json({
       message: "User created successfully",
       user: {
