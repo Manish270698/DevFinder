@@ -10,6 +10,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
   try {
     const user = req.user;
     const {
+      _id,
       firstName,
       lastName,
       emailId,
@@ -21,6 +22,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     } = user;
     res.json({
       user: {
+        _id,
         firstName,
         lastName,
         emailId,

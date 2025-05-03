@@ -1,4 +1,5 @@
 const express = require("express");
+const http = require("http"); // Added this
 const app = express();
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
@@ -8,16 +9,21 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const cors = require("cors");
+const initializeSocket = require("./utils/socket");
+
+const server = http.createServer(app); // Fixed the server creation
+initializeSocket(server);
 
 connectDB()
   .then(() => {
     console.log("Database connected successfully");
-    app.listen(7777, () => {
-      console.log("Server lstening on port 7777");
+    server.listen(7777, () => {
+      console.log("Server listening on port 7777");
     });
   })
   .catch((err) => {
-    console.error("Error while connecting to database with message: ", err);
+    console.error("Database connection failed:", err);
+    process.exit(1); // Exit to prevent further errors
   });
 
 app.use(
