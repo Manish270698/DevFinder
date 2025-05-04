@@ -11,9 +11,13 @@ const userRouter = require("./routes/user");
 const cors = require("cors");
 const initializeSocket = require("./utils/socket");
 const chatRouter = require("./routes/chat");
+const { config } = require("dotenv");
+config();
 
 const server = http.createServer(app); // Fixed the server creation
 initializeSocket(server);
+
+const port = process.env.PORT || 4000;
 
 connectDB()
   .then(() => {
