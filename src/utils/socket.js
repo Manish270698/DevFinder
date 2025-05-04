@@ -12,16 +12,10 @@ const getSecretRoomId = (userId, targetUserId) => {
 
 const initializeSocket = (server) => {
   const io = socket(server, {
-    cors: [
-      {
-        origin: "http://localhost:5173",
-        credentials: true,
-      },
-      {
-        origin: "https://dev-finder-j6pv.onrender.com",
-        credentials: true,
-      },
-    ],
+    cors: {
+      origin: ["http://localhost:5173", "https://dev-finder-j6pv.onrender.com"],
+      credentials: true,
+    },
   });
 
   io.on("connection", (socket) => {

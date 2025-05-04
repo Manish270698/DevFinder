@@ -32,19 +32,13 @@ connectDB()
   });
 
 app.use(
-  cors([
-    {
-      origin: "http://localhost:5173",
-      credentials: true,
-      methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
-    },
-    {
-      origin: "https://dev-finder-j6pv.onrender.com",
-      credentials: true,
-      methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
-    },
-  ])
+  cors({
+    origin: ["http://localhost:5173", "https://dev-finder-j6pv.onrender.com"],
+    credentials: true,
+    methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
+  })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
