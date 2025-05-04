@@ -65,6 +65,8 @@ authRouter.post("/signup", async (req, res) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 168 * 3600000), //expires after 168 hours/ 7 days
       httpOnly: true,
+      secure: true,
+      sameSite: "None",
     });
     if (!photoUrl)
       photoUrl = "https://avatars.githubusercontent.com/u/51204518?v=3";
@@ -104,6 +106,8 @@ authRouter.post("/login", async (req, res) => {
       res.cookie("token", token, {
         expires: new Date(Date.now() + 168 * 3600000), //expires after 168 hours/ 7 days
         httpOnly: true,
+        secure: true,
+        sameSite: "None",
       });
 
       const {

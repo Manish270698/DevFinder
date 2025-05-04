@@ -38,7 +38,6 @@ app.use(
     methods: ["GET", "PUT", "POST", "PATCH", "DELETE"],
   })
 );
-
 app.use(express.json());
 app.use(cookieParser());
 
