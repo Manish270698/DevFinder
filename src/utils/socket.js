@@ -1,7 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("node:crypto");
 const { Chat } = require("../models/chat");
-const ConnectionRequest  = require("../models/connectionRequest");
+const ConnectionRequest = require("../models/connectionRequest");
 
 const getSecretRoomId = (userId, targetUserId) => {
   return crypto
@@ -12,10 +12,16 @@ const getSecretRoomId = (userId, targetUserId) => {
 
 const initializeSocket = (server) => {
   const io = socket(server, {
-    cors: {
-      origin: "http://localhost:5173",
-      credentials: true,
-    },
+    cors: [
+      {
+        origin: "http://localhost:5173",
+        credentials: true,
+      },
+      {
+        origin: "https://dev-finder-j6pv.onrender.com",
+        credentials: true,
+      },
+    ],
   });
 
   io.on("connection", (socket) => {
